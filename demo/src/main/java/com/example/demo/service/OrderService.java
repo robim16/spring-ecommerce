@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -77,7 +78,30 @@ public class OrderService {
             if (product.getQuantity() < cartItem.getQuantity()){
                 throw new InsufficientStockException("Not enough stock for product" + product.getName());
             }
-        });
+
+            product.setQuantity(product.getQuantity() + cartItem.getQuantity());
+            productRepository.save(product);
+
+            return new OrderItem(null, order, product, cartItem.getQuantity(), product.getPrice());
+        }).collect(Collectors.toList());
+    }
+
+    public List<OrderDTO> getAllOrders(){
+        return orderMapper.toDTOs(orderRepository.findAll());
+    }
+
+    public List<OrderDTO> getUserOrders(Long userId){
+        return orderMapper.toDTOs(orderRepository.findByUserId(userId));
+    }
+
+    public OrderDTO updateOrderStatus(Long orderId, Order.OrderStatus status){
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(()-> new ResourceNotFoundException("Order not found"));
+        order.setStatus(status);
+
+        Order updateOrder = orderRepository.save(order);
+
+        return orderMapper.toDTO(updateOrder);
     }
 
 }
