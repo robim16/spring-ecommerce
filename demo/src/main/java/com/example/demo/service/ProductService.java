@@ -74,7 +74,7 @@ public class ProductService {
     }
 
     public Page <ProductListDTO> getAllProducts(Pageable pageable){
-        return productRepository.findAllWithoutComments();
+        return productRepository.findAllWithoutComments(pageable);
     }
 
     private String saveImage(MultipartFile image) throws IOException{
