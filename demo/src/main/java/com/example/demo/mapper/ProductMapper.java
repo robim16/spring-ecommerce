@@ -7,12 +7,12 @@ import com.example.demo.model.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "string")
+@Mapper(componentModel = "spring")
 public interface ProductMapper {
     @Mapping(target = "image", source = "image") //add mapping
     ProductDTO toDTO(Product product);
 
-    @Mapping(target = "image", source = "image")
+    @Mapping(target = "image", source = "image") //add mapping
     Product toEntity(ProductDTO productDTO);
 
     @Mapping(target = "userId",source = "user.id")
