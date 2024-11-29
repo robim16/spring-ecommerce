@@ -29,7 +29,6 @@ public class ProductController {
         @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
 
         return ResponseEntity.ok(productService.createProduct(productDTO, image));
-
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
